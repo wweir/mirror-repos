@@ -30,8 +30,7 @@ jobs:
     - name: Mirror repos
       if: steps.cache-primes.outputs.cache-hit == 'true'
       run: |
-        pwd
         for dir in zpm-zsh; do
-          cd $dir && git remote update origin && git push mirror --mirror
-          cd .. && pwd
+          cd $dir && pwd && git remote update origin && git push mirror
+          cd ..
         done
