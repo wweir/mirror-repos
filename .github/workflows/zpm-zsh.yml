@@ -1,0 +1,33 @@
+name: mirror 
+
+on: 
+  push:
+    branches: main
+  schedule:
+    - cron: "0 3 * * *"
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache zpm-zsh
+      id: cache-primes
+      uses: actions/cache@v3
+      with:
+        path: zpm-zsh
+        key: ${{ runner.os }}-mirrors
+
+    - name: Init mirror repos
+      if: steps.cache-primes.outputs.cache-hit != 'true'
+      run: bash init-zpm-zsh.sh
+
+    - name: Mirror repos
+      run: |
+        pwd
+        for dir in zpm-zsh; do
+          cd $dir && git remote update && git push mirror --mirror
+          cd .. && pwd
+        done
