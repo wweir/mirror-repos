@@ -31,6 +31,6 @@ jobs:
       run: |
         pwd
         for dir in zpm-zsh; do
-          cd $dir && git remote update && git push mirror --mirror
+          cd $dir && git remote update origin && git push mirror --mirror
           cd .. && pwd
         done
