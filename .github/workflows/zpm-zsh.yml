@@ -28,6 +28,7 @@ jobs:
       run: bash init-zpm-zsh.sh
 
     - name: Mirror repos
+      if: steps.cache-primes.outputs.cache-hit == 'true'
       run: |
         pwd
         for dir in zpm-zsh; do
