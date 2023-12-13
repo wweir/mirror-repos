@@ -1,44 +1,45 @@
 name: mirror-zpm-repos
 
-on: 
+on:
   push:
-    branches: main
+    branches:
+      - main
   schedule:
     - cron: "0 3 * * *"
-    
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Cache zpm-zsh
-      id: cache-primes
-      uses: actions/cache@v3
-      with:
-        path: |
-          zpm-zsh
-          tj
-          agkozak
-          miekg
-        key: ${{ runner.os }}-zpm-mirrors
+      - name: Cache zpm-zsh
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: |
+            zpm-zsh
+            tj
+            agkozak
+            miekg
+          key: ${{ runner.os }}-zpm-mirrors
 
-    - name: Init mirror repos
-      if: steps.cache-primes.outputs.cache-hit != 'true'
-      run: |
-        ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
-        bash init-zpm.sh
+      - name: Init mirror repos
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+          ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
+          bash init-zpm.sh
 
-    - name: Mirror repos
-      if: steps.cache-primes.outputs.cache-hit == 'true'
-      run: |
-        ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
-        WORK_DIR=$(pwd)
-        for dir in zpm-zsh/*; do
-          cd $dir && pwd && git remote update origin && git push mirror
-          cd $WORK_DIR
-        done
+      - name: Mirror repos
+        if: steps.cache-primes.outputs.cache-hit == 'true'
+        run: |
+          ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
+          WORK_DIR=$(pwd)
+          for dir in zpm/*; do
+            cd $dir && pwd && git remote update origin && git push mirror
+            cd $WORK_DIR
+          done
