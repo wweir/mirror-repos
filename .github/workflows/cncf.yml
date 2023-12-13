@@ -1,0 +1,44 @@
+name: mirror-cncf-repos
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Cache cncf-zsh
+        id: cache-primes
+        uses: actions/cache@v3
+        with:
+          path: |
+            containerd
+            opencontainers
+            kubernetes
+          key: ${{ runner.os }}-cncf-mirrors
+
+      - name: Init mirror repos
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+        run: |
+          ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
+          bash init-cncf.sh
+
+      - name: Mirror repos
+        if: steps.cache-primes.outputs.cache-hit == 'true'
+        run: |
+          ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
+          WORK_DIR=$(pwd)
+          for dir in cncf/*; do
+            cd $dir && pwd && git remote update origin && git push mirror
+            cd $WORK_DIR
+          done
