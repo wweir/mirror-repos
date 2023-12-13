@@ -32,6 +32,7 @@ jobs:
     - name: Mirror repos
       if: steps.cache-primes.outputs.cache-hit == 'true'
       run: |
+        ls -alh ~/.ssh
         echo 'UserKnownHostsFile=/dev/null' > ~/.ssh/config
         WORK_DIR=pwd
         for dir in zpm-zsh/*; do
