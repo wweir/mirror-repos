@@ -33,7 +33,7 @@ jobs:
       if: steps.cache-primes.outputs.cache-hit == 'true'
       run: |
         ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
-        WORK_DIR=pwd
+        WORK_DIR=$(pwd)
         for dir in zpm-zsh/*; do
           cd $dir && pwd && git remote update origin && git push mirror
           cd $WORK_DIR
