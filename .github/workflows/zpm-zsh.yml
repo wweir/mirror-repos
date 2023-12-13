@@ -25,11 +25,14 @@ jobs:
 
     - name: Init mirror repos
       if: steps.cache-primes.outputs.cache-hit != 'true'
-      run: bash init-zpm-zsh.sh
+      run: |
+        echo 'UserKnownHostsFile=/dev/null' > ~/.ssh/config
+        bash init-zpm-zsh.sh
 
     - name: Mirror repos
       if: steps.cache-primes.outputs.cache-hit == 'true'
       run: |
+        echo 'UserKnownHostsFile=/dev/null' > ~/.ssh/config
         WORK_DIR=pwd
         for dir in zpm-zsh/*; do
           cd $dir && pwd && git remote update origin && git push mirror
