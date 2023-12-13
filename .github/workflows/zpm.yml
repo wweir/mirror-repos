@@ -36,6 +36,9 @@ jobs:
           ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
           WORK_DIR=$(pwd)
           for dir in zpm/*; do
-            cd $dir && pwd && git remote update origin && git push mirror
+            cd $dir && pwd
+            git remote update origin
+            git push mirror --tags --prune --force
+            git push mirror --all --prune --force
             cd $WORK_DIR
           done
