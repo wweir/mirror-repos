@@ -25,13 +25,13 @@ jobs:
           tj
           agkozak
           miekg
-        key: ${{ runner.os }}-mirrors
+        key: ${{ runner.os }}-zpm-mirrors
 
     - name: Init mirror repos
       if: steps.cache-primes.outputs.cache-hit != 'true'
       run: |
         ssh-keyscan -H e.coding.net > ~/.ssh/known_hosts
-        bash init-zpm-zsh.sh
+        bash init-zpm.sh
 
     - name: Mirror repos
       if: steps.cache-primes.outputs.cache-hit == 'true'
