@@ -20,7 +20,11 @@ jobs:
       id: cache-primes
       uses: actions/cache@v3
       with:
-        path: zpm-zsh
+        path: |
+          zpm-zsh
+          tj
+          agkozak
+          miekg
         key: ${{ runner.os }}-mirrors
 
     - name: Init mirror repos
