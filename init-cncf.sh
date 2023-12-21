@@ -4,7 +4,7 @@ set -ex
 mkdir -p cncf
 cd cncf
 WORK_DIR=$(pwd)
-ENDPOINT=https://codeup.aliyun.com/wweir
+ENDPOINT=https://e.coding.net/wweir
 
 project=kubernetes
 for repo in kubernetes.git; do

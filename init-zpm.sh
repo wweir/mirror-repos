@@ -4,7 +4,7 @@ set -ex
 mkdir -p zpm
 cd zpm
 WORK_DIR=$(pwd)
-ENDPOINT=https://codeup.aliyun.com/wweir
+ENDPOINT=https://e.coding.net/wweir
 
 project=zpm-zsh
 for repo in zpm.git core-config.git helpers.git zsh-completions.git fast-syntax-highlighting.git; do

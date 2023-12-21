@@ -29,7 +29,7 @@ jobs:
         if: steps.cache-primes.outputs.cache-hit == 'true'
         run: |
           git config --global credential.helper store
-          echo ${{ secrets.CODEUP_GITHUB_ACTION }} > ~/.git-credentials
+          echo ${{ secrets.CODING_GITHUB_ACTION }} > ~/.git-credentials
           WORK_DIR=$(pwd)
           for dir in cncf/*; do
             cd $dir && pwd
